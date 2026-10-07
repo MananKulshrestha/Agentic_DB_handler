@@ -8,9 +8,12 @@ class Settings(BaseSettings):
     dbh_encryption_secret: str = "local-college-project-key"
     openai_api_key: str = ""
     openai_allow_schema_sharing: bool = False
+    typesafe_api_key: str = ""
+    typesafe_allow_schema_sharing: bool = False
+    typesafe_model: str = "jev-latest"
     auth_required: bool = False
     auth_bootstrap_secret: str = ""
-    openai_model: str = "gpt-4.1-mini"
+    openai_model: str = "gpt-6-luna"
     cors_origin: str = "http://localhost:5173"
     max_active_jobs: int = 2
     agent_tool_limit: int = 8
@@ -22,3 +25,7 @@ settings = Settings()
 
 def ai_enabled() -> bool:
     return bool(settings.openai_api_key and settings.openai_allow_schema_sharing)
+
+
+def jev_enabled() -> bool:
+    return bool(settings.typesafe_api_key and settings.typesafe_allow_schema_sharing)

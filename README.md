@@ -13,6 +13,7 @@ A local database workbench for exploring schemas, saving snapshots, reviewing fi
 - Deterministic checks for key, index, timestamp, identifier, and documentation issues.
 - Markdown documentation and export, saved findings, business rules, and chat history.
 - AI-assisted chat when `OPENAI_API_KEY` is configured and schema sharing is explicitly enabled. Without that opt-in, the sidebar still answers basic questions using saved schema facts.
+- Optional Jev advisory decisions for finding priority and triage, likely relevance, missing evidence, schema-diff priority, proposal review readiness, and run attention. Jev uses TypeSafe's official System One API and is available only when its key and schema-sharing opt-in are configured.
 - Background operations with status and server-sent progress events.
 - SQL drafting, bounded read queries, estimated plans, profiling, normalization checks, provisional suitability scoring, detailed schema diffs, inferred relationships, workload inspection, source-context line references, and index experiments.
 - Uploaded SQL workload fingerprinting and conservative index candidates. A separately registered PostgreSQL sandbox can run a temporary-table synthetic experiment; the default remains an in-memory SQLite simulation.
@@ -40,7 +41,9 @@ python -m venv .venv
 npm install --prefix frontend
 ```
 
-Set `DBH_ENCRYPTION_SECRET` to a unique value in `.env` before saving connections. Set `OPENAI_API_KEY` and `OPENAI_ALLOW_SCHEMA_SHARING=true` to enable open-ended AI analysis. This explicitly allows schema names, column names, and finding summaries to be sent to the configured model provider. Leave either unset for local fallback chat.
+Set `DBH_ENCRYPTION_SECRET` to a unique value in `.env` before saving connections. The default AI model is `gpt-6-luna`; set `OPENAI_API_KEY` and `OPENAI_ALLOW_SCHEMA_SHARING=true` to enable open-ended AI analysis. This explicitly allows schema names, column names, and finding summaries to be sent to OpenAI through the API. Leave either unset for local fallback chat. The key belongs only in the server-side `.env` file, never in frontend code or Git.
+
+To enable Jev, set `TYPESAFE_API_KEY` to your official TypeSafe API key and `TYPESAFE_ALLOW_SCHEMA_SHARING=true` in the backend `.env`, then restart the backend. The optional `TYPESAFE_MODEL` defaults to `jev-latest`. Jev sends bounded finding evidence, schema changes, proposal contents, or run metadata to TypeSafe only when you press an assessment button. The key stays on the backend. The project records no automatic database action from these ratings. The UI shows each rating's confidence; a provider error leaves the original analysis available and reports that Jev is unavailable. Use the Findings, Design lab, and Overview pages to request assessments.
 
 To try shared-project sign-in, set `AUTH_REQUIRED=true` and a long random `AUTH_BOOTSTRAP_SECRET` in `.env`. On first load, the frontend asks for that secret once to create the administrator. Administrators can create viewer, analyst, or administrator accounts from the overview page. Tokens are kept in the browser session and expire after 24 hours. This local account system has not been hardened with rate limiting, external identity, or a security review; do not expose it publicly as-is.
 

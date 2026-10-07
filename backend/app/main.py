@@ -22,7 +22,7 @@ from sse_starlette.sse import EventSourceResponse
 
 from .analysis import RULES
 from .auth import hash_password, new_token, token_digest, verify_password
-from .config import ai_enabled, settings
+from .config import ai_enabled, jev_enabled, settings
 from .connectors import encrypt_password, test_connection
 from .database import (
     Artifact,
@@ -53,6 +53,15 @@ from .database import (
     utcnow,
 )
 from .diff import compare_snapshots
+from .error_messages import describe_error
+from .jev import (
+    DIFF_QUESTIONS,
+    FINDING_QUESTIONS,
+    PROPOSAL_QUESTIONS,
+    RUN_QUESTIONS,
+    JevUnavailable,
+    decide,
+)
 from .jobs import add_event, manager
 
 logger = logging.getLogger(__name__)
@@ -206,6 +215,24 @@ async def limited(db, statement, limit: int, cursor: int):
         out(item)
         for item in (await db.scalars(statement.offset(cursor).limit(limit))).all()
     ]
+
+
+def require_jev():
+    if not jev_enabled():
+        raise HTTPException(503, "Set TYPESAFE_API_KEY and TYPESAFE_ALLOW_SCHEMA_SHARING=true to use Jev")
+
+
+async def jev_batch(items: list[tuple[str, dict]], questions: dict) -> list[dict]:
+    async def one(item_id: str, state: dict) -> dict:
+        try:
+            return {"id": item_id, **await decide(state, questions)}
+        except JevUnavailable as exc:
+            return {"id": item_id, "error": str(exc)}
+
+    result = await asyncio.gather(*(one(item_id, state) for item_id, state in items))
+    if result and all("error" in item for item in result):
+        raise HTTPException(503, "Jev is unavailable; retry the decision later")
+    return result
 
 
 class ProjectPatch(BaseModel):
@@ -406,6 +433,7 @@ async def capabilities():
         "operations": list(RunCreate.model_fields["kind"].annotation.__args__),
         "ai_available": ai_enabled(),
         "ai_schema_sharing_enabled": settings.openai_allow_schema_sharing,
+        "jev_enabled": jev_enabled(),
         "limits": {"active_jobs": settings.max_active_jobs, "query_rows": 500},
     }
 
@@ -620,13 +648,22 @@ async def delete_connection(
 
 
 @app.post("/api/v1/connections/{connection_id}/test")
-async def check_connection(connection_id: str, db: AsyncSession = Depends(get_session)):
+async def check_connection(connection_id: str, request: Request, db: AsyncSession = Depends(get_session)):
     item = await require(db, Connection, connection_id)
     try:
         result = await test_connection(item)
     except Exception as exc:
-        logger.warning("Connection test failed (%s)", type(exc).__name__)
-        raise HTTPException(422, "Connection failed; check the host, credentials, database, and read permissions") from exc
+        failure = describe_error(exc, connection_test=True)
+        logger.warning("Connection test failed (%s)", failure.code)
+        return JSONResponse(
+            status_code=422,
+            content={
+                "code": failure.code,
+                "message": failure.message,
+                "details": {"hint": failure.hint},
+                "request_id": request.state.request_id,
+            },
+        )
     item.capabilities = result
     audit(db, "connection.tested", "connection", item.id, {"connected": True})
     await db.commit()
@@ -752,6 +789,28 @@ async def snapshot_diff(
     return {"before_snapshot_id": against, "after_snapshot_id": snapshot_id, **compare_snapshots(old, new)}
 
 
+@app.get("/api/v1/jev/snapshots/{snapshot_id}/diff")
+async def jev_snapshot_diff(snapshot_id: str, against: str, limit: int = Query(50, ge=1, le=50), cursor: int = Query(0, ge=0), db: AsyncSession = Depends(get_session)):
+    require_jev()
+    before = await require(db, Snapshot, against)
+    after = await require(db, Snapshot, snapshot_id)
+    if before.connection_id != after.connection_id:
+        raise HTTPException(422, "Snapshots must belong to the same connection")
+    old = (await db.scalars(select(SchemaObject).where(SchemaObject.snapshot_id == against))).all()
+    new = (await db.scalars(select(SchemaObject).where(SchemaObject.snapshot_id == snapshot_id))).all()
+    diff = compare_snapshots(old, new)
+    changes = [
+        {"id": f"{kind}:{item['schema']}.{item['name']}:{item['kind']}", "change": kind, **item}
+        for kind in ("added", "removed", "changed") for item in diff[kind]
+    ]
+    page = changes[cursor:cursor + limit]
+    items = [(item["id"], {"change": item["change"], "object": f"{item['schema']}.{item['name']}",
+                            "kind": item["kind"], "details": json.dumps(item, default=str)[:4000]}) for item in page]
+    return {"items": await jev_batch(items, DIFF_QUESTIONS), "changes": page,
+            "before_snapshot_id": against, "after_snapshot_id": snapshot_id,
+            "has_more": cursor + limit < len(changes)}
+
+
 @app.get("/api/v1/snapshots/{snapshot_id}/objects")
 async def list_objects(
     snapshot_id: str,
@@ -863,6 +922,26 @@ async def list_findings(
     return await limited(db, stmt.order_by(Finding.severity, Finding.id), limit, cursor)
 
 
+@app.get("/api/v1/jev/findings")
+async def jev_findings(snapshot_id: str, limit: int = Query(50, ge=1, le=50), cursor: int = Query(0, ge=0), db: AsyncSession = Depends(get_session)):
+    require_jev()
+    await require(db, Snapshot, snapshot_id)
+    page = (await db.scalars(select(Finding).where(Finding.snapshot_id == snapshot_id)
+                             .order_by(Finding.id).offset(cursor).limit(limit + 1))).all()
+    findings = page[:limit]
+    items = [(f.id, {"rule": f.rule_id, "category": f.category, "severity": f.severity,
+                     "certainty": f.certainty, "review_status": f.status, "observation": f.observation[:1000],
+                     "recommendation": f.recommendation[:1000], "assumptions": f.assumptions,
+                     "evidence": json.dumps(f.evidence, default=str)[:3000]}) for f in findings]
+    result = await jev_batch(items, FINDING_QUESTIONS)
+    observations = {f.id: f.observation for f in findings}
+    for item in result:
+        item["observation"] = observations[item["id"]]
+    result.sort(key=lambda item: item.get("decisions", {}).get("priority", {}).get("value", -1), reverse=True)
+    return {"items": result, "snapshot_id": snapshot_id, "limit": limit, "cursor": cursor,
+            "has_more": len(page) > limit}
+
+
 @app.get("/api/v1/findings/{finding_id}")
 async def get_finding(finding_id: str, db: AsyncSession = Depends(get_session)):
     return out(await require(db, Finding, finding_id))
@@ -956,6 +1035,21 @@ async def list_artifacts(
 @app.get("/api/v1/artifacts/{artifact_id}")
 async def get_artifact(artifact_id: str, db: AsyncSession = Depends(get_session)):
     return out(await require(db, Artifact, artifact_id))
+
+
+@app.get("/api/v1/jev/artifacts/{artifact_id}/readiness")
+async def jev_proposal_readiness(artifact_id: str, db: AsyncSession = Depends(get_session)):
+    require_jev()
+    item = await require(db, Artifact, artifact_id)
+    if item.kind not in ("redesign", "migration_proposal", "relationship_suggestions"):
+        raise HTTPException(422, "Only design proposals can be assessed")
+    state = {"kind": item.kind, "title": item.title,
+             "proposal": json.dumps(item.content, default=str)[:8000],
+             "note": "This is a review artifact; no database change has been applied."}
+    try:
+        return {"artifact_id": item.id, **await decide(state, PROPOSAL_QUESTIONS)}
+    except JevUnavailable as exc:
+        raise HTTPException(503, str(exc)) from exc
 
 
 @app.get("/api/v1/artifacts/{artifact_id}/export")
@@ -1224,6 +1318,19 @@ async def list_runs(
     if status:
         stmt = stmt.where(Run.status == status)
     return await limited(db, stmt.order_by(Run.created_at.desc()), limit, cursor)
+
+
+@app.get("/api/v1/jev/runs")
+async def jev_runs(limit: int = Query(12, ge=1, le=25), db: AsyncSession = Depends(get_session)):
+    require_jev()
+    runs = (await db.scalars(select(Run).order_by(Run.created_at.desc()).limit(limit))).all()
+    items = [(run.id, {"kind": run.kind, "status": run.status, "stage": run.stage,
+                      "created_at": run.created_at.isoformat(),
+                      "finished_at": run.finished_at.isoformat() if run.finished_at else None,
+                      "result_keys": sorted(run.result or {})}) for run in runs]
+    result = await jev_batch(items, RUN_QUESTIONS)
+    result.sort(key=lambda item: item.get("decisions", {}).get("attention", {}).get("value", -1), reverse=True)
+    return {"items": result}
 
 
 @app.get("/api/v1/runs/{run_id}")

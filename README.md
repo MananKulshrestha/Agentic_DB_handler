@@ -40,7 +40,7 @@ python -m venv .venv
 npm install --prefix frontend
 ```
 
-Set `DBH_ENCRYPTION_SECRET` to a unique value in `.env` before saving connections. Set `OPENAI_API_KEY` and `OPENAI_ALLOW_SCHEMA_SHARING=true` to enable open-ended AI analysis. This explicitly allows schema names, column names, and finding summaries to be sent to the configured model provider. Leave either unset for local fallback chat.
+Set `DBH_ENCRYPTION_SECRET` to a unique value in `.env` before saving connections. The default AI model is `gpt-6-luna`; set `OPENAI_API_KEY` and `OPENAI_ALLOW_SCHEMA_SHARING=true` to enable open-ended AI analysis. This explicitly allows schema names, column names, and finding summaries to be sent to OpenAI through the API. Leave either unset for local fallback chat. The key belongs only in the server-side `.env` file, never in frontend code or Git.
 
 To try shared-project sign-in, set `AUTH_REQUIRED=true` and a long random `AUTH_BOOTSTRAP_SECRET` in `.env`. On first load, the frontend asks for that secret once to create the administrator. Administrators can create viewer, analyst, or administrator accounts from the overview page. Tokens are kept in the browser session and expire after 24 hours. This local account system has not been hardened with rate limiting, external identity, or a security review; do not expose it publicly as-is.
 

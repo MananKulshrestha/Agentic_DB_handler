@@ -48,6 +48,11 @@ TOOL_DEFINITIONS = [
 ]
 
 
+def _model_parameters() -> dict:
+    # Luna's Chat Completions function calling requires no reasoning effort.
+    return {"reasoning_effort": "none"} if settings.openai_model == "gpt-6-luna" else {}
+
+
 def _grounded_fallback(question, objects, findings, selected_object_ids):
     lower = question.lower()
     if any(phrase in lower for phrase in ("primary key", "primary keys", "without a key")):
@@ -246,6 +251,7 @@ async def answer(
     for _ in range(settings.agent_round_limit):
         completion = await client.chat.completions.create(
             model=settings.openai_model,
+            **_model_parameters(),
             messages=messages,
             tools=TOOL_DEFINITIONS,
             tool_choice="auto",
@@ -304,6 +310,7 @@ async def answer(
                 evidence.append({"kind": "object", "id": result["object_id"]})
     completion = await client.chat.completions.create(
         model=settings.openai_model,
+        **_model_parameters(),
         messages=messages
         + [
             {
@@ -343,6 +350,7 @@ async def draft_sql(
     client = AsyncOpenAI(api_key=settings.openai_api_key, timeout=30)
     completion = await client.chat.completions.create(
         model=settings.openai_model,
+        **_model_parameters(),
         response_format={"type": "json_object"},
         messages=[
             {

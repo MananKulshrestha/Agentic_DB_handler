@@ -41,6 +41,7 @@ from .database import (
     utcnow,
 )
 from .diff import compare_snapshots
+from .error_messages import describe_error
 
 
 async def add_event(run_id: str, event_type: str, payload: dict):
@@ -1111,11 +1112,7 @@ HANDLERS = {
 
 
 def public_error(exc: Exception) -> str:
-    if isinstance(exc, ValueError):
-        return str(exc)[:500]
-    if isinstance(exc, TimeoutError):
-        return "The operation timed out; reduce the scope or try again."
-    return f"{type(exc).__name__}: operation failed. Check database access and server logs."
+    return describe_error(exc).text()
 
 
 async def execute_run(run_id: str):

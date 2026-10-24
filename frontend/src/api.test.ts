@@ -13,6 +13,11 @@ test('surfaces the structured API error message', async () => {
   await expect(api('/runs')).rejects.toThrow('Choose a table');
 });
 
+test('includes the database error hint', async () => {
+  vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: false, status: 422, json: async () => ({ code: 'DATABASE_AUTH_FAILED', message: 'The database rejected the username or password.', details: { hint: 'Check both in Edit connection.' } }) }));
+  await expect(api('/connections/example/test')).rejects.toThrow('The database rejected the username or password. Check both in Edit connection.');
+});
+
 test('does not try to parse an empty delete response', async () => {
   vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: true, status: 204 }));
   await expect(api('/connections/example', { method: 'DELETE' })).resolves.toBeUndefined();

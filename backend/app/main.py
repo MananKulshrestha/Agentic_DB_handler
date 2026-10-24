@@ -53,6 +53,7 @@ from .database import (
     utcnow,
 )
 from .diff import compare_snapshots
+from .error_messages import describe_error
 from .jobs import add_event, manager
 
 logger = logging.getLogger(__name__)
@@ -620,13 +621,22 @@ async def delete_connection(
 
 
 @app.post("/api/v1/connections/{connection_id}/test")
-async def check_connection(connection_id: str, db: AsyncSession = Depends(get_session)):
+async def check_connection(connection_id: str, request: Request, db: AsyncSession = Depends(get_session)):
     item = await require(db, Connection, connection_id)
     try:
         result = await test_connection(item)
     except Exception as exc:
-        logger.warning("Connection test failed (%s)", type(exc).__name__)
-        raise HTTPException(422, "Connection failed; check the host, credentials, database, and read permissions") from exc
+        failure = describe_error(exc, connection_test=True)
+        logger.warning("Connection test failed (%s)", failure.code)
+        return JSONResponse(
+            status_code=422,
+            content={
+                "code": failure.code,
+                "message": failure.message,
+                "details": {"hint": failure.hint},
+                "request_id": request.state.request_id,
+            },
+        )
     item.capabilities = result
     audit(db, "connection.tested", "connection", item.id, {"connected": True})
     await db.commit()

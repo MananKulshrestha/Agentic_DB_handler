@@ -10,7 +10,7 @@ class Settings(BaseSettings):
     openai_allow_schema_sharing: bool = False
     auth_required: bool = False
     auth_bootstrap_secret: str = ""
-    openai_model: str = "gpt-4.1-mini"
+    openai_model: str = "gpt-6-luna"
     cors_origin: str = "http://localhost:5173"
     max_active_jobs: int = 2
     agent_tool_limit: int = 8

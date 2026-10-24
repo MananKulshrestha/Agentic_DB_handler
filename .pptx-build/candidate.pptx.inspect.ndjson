@@ -1,0 +1,112 @@
+{"kind":"deck","id":"pr/arpxoq","name":"Deck"}
+{"kind":"layout","layoutId":"db2f39ae-e90c-45b4-bd74-c8d040b055a9","name":"Master","type":"master"}
+{"kind":"layout","layoutId":"4548b8f6-b301-4775-8873-aa87621766ac","name":"Title Slide","type":"title"}
+{"kind":"slide","id":"sl/yl1ncn","slide":1,"title":"AGENTIC DATABASE","textShapes":3}
+{"kind":"shape","id":"sh/wry5sfuh","slide":1,"bbox":[0,0,610,720]}
+{"kind":"textbox","id":"sh/xs76lkv2","slide":1,"text":"AGENTIC DATABASE\nHANDLER","textPreview":"AGENTIC DATABASE | HANDLER","textChars":24,"textLines":2,"bbox":[78,210,570,142]}
+{"kind":"textbox","id":"sh/mlwnm5cf","slide":1,"text":"A local workbench for understanding database structure and guiding review","textPreview":"A local workbench for understanding database structure and guiding review","textChars":73,"textLines":1,"bbox":[82,372,520,83]}
+{"kind":"shape","id":"sh/nm5ofadk","slide":1,"bbox":[82,493,64,5]}
+{"kind":"textbox","id":"sh/ony5ovu5","slide":1,"text":"PROJECT OVERVIEW  |  OCTOBER 2026","textPreview":"PROJECT OVERVIEW  |  OCTOBER 2026","textChars":33,"textLines":1,"bbox":[82,520,480,30]}
+{"kind":"image","id":"im/2xojmd4n","slide":1,"name":"","alt":"Abstract database schema under review","bbox":[0,0,1280,720]}
+{"kind":"notes","id":"nt/yl1ncn","slide":1,"text":"Project status and scope are summarized from PROJECT_PRIMER.md and IMPLEMENTATION_STATUS.md. JEV roadmap items are proposed, not implemented."}
+{"kind":"slide","id":"sl/3az3yw","slide":2,"title":"A database workbench for evidence-led review","textShapes":20}
+{"kind":"shape","id":"sh/bytsnm58","slide":2,"bbox":[0,0,14,720]}
+{"kind":"textbox","id":"sh/wz2twr6t","slide":2,"text":"A database workbench for evidence-led review","textPreview":"A database workbench for evidence-led review","textChars":44,"textLines":1,"bbox":[68,42,1120,60]}
+{"kind":"textbox","id":"sh/x0bapwny","slide":2,"text":"It records what a database looks like, explains possible issues, and keeps decisions reviewable.","textPreview":"It records what a database looks like, explains possible issues, and keeps decisions reviewable.","textChars":96,"textLines":1,"bbox":[70,108,1100,40]}
+{"kind":"textbox","id":"sh/ylkby1oj","slide":2,"text":"02","textPreview":"02","textChars":2,"textLines":1,"bbox":[1172,660,50,24]}
+{"kind":"textbox","id":"sh/jmtsr654","slide":2,"text":"01","textPreview":"01","textChars":2,"textLines":1,"bbox":[70,218,50,44]}
+{"kind":"shape","id":"sh/kn2t0b6p","slide":2,"bbox":[70,270,4,100]}
+{"kind":"textbox","id":"sh/lovatwna","slide":2,"text":"Connect & scan","textPreview":"Connect & scan","textChars":14,"textLines":1,"bbox":[88,270,195,35]}
+{"kind":"textbox","id":"sh/epgrmxof","slide":2,"text":"Read schema metadata","textPreview":"Read schema metadata","textChars":20,"textLines":1,"bbox":[88,313,190,66]}
+{"kind":"textbox","id":"sh/zq9sf2p0","slide":2,"text":"02","textPreview":"02","textChars":2,"textLines":1,"bbox":[300,218,50,44]}
+{"kind":"shape","id":"sh/b294vi1o","slide":2,"bbox":[300,270,4,100]}
+{"kind":"textbox","id":"sh/a103mdk3","slide":2,"text":"Analyze","textPreview":"Analyze","textChars":7,"textLines":1,"bbox":[318,270,195,35]}
+{"kind":"textbox","id":"sh/x4bmxsje","slide":2,"text":"Apply repeatable rules","textPreview":"Apply repeatable rules","textChars":22,"textLines":1,"bbox":[318,313,190,66]}
+{"kind":"textbox","id":"sh/c3ilon29","slide":2,"text":"03","textPreview":"03","textChars":2,"textLines":1,"bbox":[530,218,50,44]}
+{"kind":"shape","id":"sh/ne94ry1c","slide":2,"bbox":[530,270,4,100]}
+{"kind":"textbox","id":"sh/2d03idkr","slide":2,"text":"Explore","textPreview":"Explore","textChars":7,"textLines":1,"bbox":[548,270,195,35]}
+{"kind":"textbox","id":"sh/p0rmt8ji","slide":2,"text":"Inspect objects and evidence","textPreview":"Inspect objects and evidence","textChars":28,"textLines":1,"bbox":[548,313,190,66]}
+{"kind":"textbox","id":"sh/ofilk32x","slide":2,"text":"04","textPreview":"04","textChars":2,"textLines":1,"bbox":[760,218,50,44]}
+{"kind":"shape","id":"sh/fapkny1g","slide":2,"bbox":[760,270,4,100]}
+{"kind":"textbox","id":"sh/e9g3etkv","slide":2,"text":"Review","textPreview":"Review","textChars":6,"textLines":1,"bbox":[778,270,195,35]}
+{"kind":"textbox","id":"sh/i5gnqt4n","slide":2,"text":"Accept, dismiss, or add context","textPreview":"Accept, dismiss, or add context","textChars":31,"textLines":1,"bbox":[778,313,190,66]}
+{"kind":"textbox","id":"sh/j6p4zy58","slide":2,"text":"05","textPreview":"05","textChars":2,"textLines":1,"bbox":[990,218,50,44]}
+{"kind":"shape","id":"sh/47y5s3mt","slide":2,"bbox":[990,270,4,100]}
+{"kind":"textbox","id":"sh/587m1one","slide":2,"text":"Compare","textPreview":"Compare","textChars":7,"textLines":1,"bbox":[1008,270,195,35]}
+{"kind":"textbox","id":"sh/69gnut4z","slide":2,"text":"Rescan and inspect changes","textPreview":"Rescan and inspect changes","textChars":26,"textLines":1,"bbox":[1008,313,190,66]}
+{"kind":"shape","id":"sh/rap43y54","slide":2,"bbox":[70,443,1120,1]}
+{"kind":"textbox","id":"sh/sby5w3mp","slide":2,"text":"Core boundary","textPreview":"Core boundary","textChars":13,"textLines":1,"bbox":[70,476,190,32]}
+{"kind":"textbox","id":"sh/dc7m583a","slide":2,"text":"Findings, approvals, reports, and migration inventories record review. Target schema changes stay under explicit human control.","textPreview":"Findings, approvals, reports, and migration inventories record review. Target schema changes stay under explicit human control.","textChars":127,"textLines":1,"bbox":[270,469,900,72]}
+{"kind":"notes","id":"nt/3az3yw","slide":2,"text":"The normal workflow inspects saved schema snapshots. Query Lab separately supports bounded read queries. The workbench supports learning and demonstration, with production database administration outside its scope."}
+{"kind":"slide","id":"sl/wo53a0","slide":3,"title":"What the project already implements","textShapes":10}
+{"kind":"shape","id":"sh/val0v2x0","slide":3,"bbox":[0,0,14,720]}
+{"kind":"textbox","id":"sh/wbuh47el","slide":3,"text":"What the project already implements","textPreview":"What the project already implements","textChars":35,"textLines":1,"bbox":[68,42,1120,60]}
+{"kind":"textbox","id":"sh/xc3ixsf6","slide":3,"text":"Verified core flow: PostgreSQL connection, scan, findings, documentation, grounded chat, and bounded read query.","textPreview":"Verified core flow: PostgreSQL connection, scan, findings, documentation, grounded chat, and bounded read query.","textChars":112,"textLines":1,"bbox":[70,108,1100,40]}
+{"kind":"textbox","id":"sh/idcz6xwb","slide":3,"text":"03","textPreview":"03","textChars":2,"textLines":1,"bbox":[1172,660,50,24]}
+{"kind":"textbox","id":"sh/jel0z2xw","slide":3,"text":"Inspect","textPreview":"Inspect","textChars":7,"textLines":1,"bbox":[72,204,330,44]}
+{"kind":"shape","id":"sh/kfuh87eh","slide":3,"bbox":[72,254,330,3]}
+{"kind":"textbox","id":"sh/5gni1cf2","slide":3,"text":"PostgreSQL, MariaDB, and MongoDB metadata connectors\nSaved snapshots with objects, types, keys, indexes, and relationships\nSchema explorer and relationship diagram","textPreview":"PostgreSQL, MariaDB, and MongoDB metadata connectors | Saved snapshots with objects, types, keys, indexes, and relationships | Schema exp...","textChars":163,"textLines":3,"bbox":[72,278,330,250]}
+{"kind":"textbox","id":"sh/yhszudg7","slide":3,"text":"Explain","textPreview":"Explain","textChars":7,"textLines":1,"bbox":[470,204,330,44]}
+{"kind":"shape","id":"sh/zi1gnixs","slide":3,"bbox":[470,254,330,3]}
+{"kind":"textbox","id":"sh/jux8z294","slide":3,"text":"Deterministic checks produce evidence-linked findings\nMarkdown documentation and snapshot comparisons\nChat answers can cite saved objects and findings","textPreview":"Deterministic checks produce evidence-linked findings | Markdown documentation and snapshot comparisons | Chat answers can cite saved obj...","textChars":150,"textLines":3,"bbox":[470,278,330,250]}
+{"kind":"textbox","id":"sh/ytor6xsz","slide":3,"text":"Review","textPreview":"Review","textChars":6,"textLines":1,"bbox":[868,204,330,44]}
+{"kind":"shape","id":"sh/lgfq1cra","slide":3,"bbox":[868,254,330,3]}
+{"kind":"textbox","id":"sh/kv6987ap","slide":3,"text":"Read-only query lab with row and time limits\nDesign tools for normalization, workload, and migration inventory\nProposal review, run history, schedules, and optional roles","textPreview":"Read-only query lab with row and time limits | Design tools for normalization, workload, and migration inventory | Proposal review, run h...","textChars":170,"textLines":3,"bbox":[868,278,330,250]}
+{"kind":"textbox","id":"sh/bqd8v298","slide":3,"text":"Some advanced flows still need live browser or integration verification. AI mode also requires an explicit model key and schema-sharing opt-in.","textPreview":"Some advanced flows still need live browser or integration verification. AI mode also requires an explicit model key and schema-sharing o...","textChars":143,"textLines":1,"bbox":[72,588,1090,44]}
+{"kind":"notes","id":"nt/wo53a0","slide":3,"text":"As of October 7, 2026. The latest live verification covered the PostgreSQL demo with four tables and six findings. Advanced design flows, sandbox experiments, schedules, roles, and non-PostgreSQL fixtures still need additional live verification."}
+{"kind":"slide","id":"sl/oxd0b2","slide":4,"title":"JEV roadmap | P0 clear candidates","textShapes":24}
+{"kind":"shape","id":"sh/fqx8ry1k","slide":4,"bbox":[0,0,14,720]}
+{"kind":"textbox","id":"sh/gr69k3i5","slide":4,"text":"JEV roadmap | P0 clear candidates","textPreview":"JEV roadmap | P0 clear candidates","textChars":33,"textLines":1,"bbox":[68,42,1120,60]}
+{"kind":"textbox","id":"sh/hsfat8jq","slide":4,"text":"Add an advisory decision layer where the workbench already has evidence and review workflows.","textPreview":"Add an advisory decision layer where the workbench already has evidence and review workflows.","textChars":93,"textLines":1,"bbox":[70,108,1100,40]}
+{"kind":"textbox","id":"sh/6l4retk3","slide":4,"text":"04","textPreview":"04","textChars":2,"textLines":1,"bbox":[1172,660,50,24]}
+{"kind":"textbox","id":"sh/7md8ny1o","slide":4,"text":"01","textPreview":"01","textChars":2,"textLines":1,"bbox":[78,190,48,32]}
+{"kind":"textbox","id":"sh/sn69g3i9","slide":4,"text":"Finding priority","textPreview":"Finding priority","textChars":16,"textLines":1,"bbox":[142,190,245,32]}
+{"kind":"textbox","id":"sh/tofqp8ju","slide":4,"text":"Rank findings using severity, certainty, evidence, and affected objects.","textPreview":"Rank findings using severity, certainty, evidence, and affected objects.","textChars":72,"textLines":1,"bbox":[390,190,800,40]}
+{"kind":"textbox","id":"sh/yx4ra9k7","slide":4,"text":"02","textPreview":"02","textChars":2,"textLines":1,"bbox":[78,251,48,32]}
+{"kind":"textbox","id":"sh/jyd8je1s","slide":4,"text":"Review triage","textPreview":"Review triage","textChars":13,"textLines":1,"bbox":[142,251,245,32]}
+{"kind":"textbox","id":"sh/rmt4v614","slide":4,"text":"Group findings into review now, later, or informational.","textPreview":"Group findings into review now, later, or informational.","textChars":56,"textLines":1,"bbox":[390,251,800,40]}
+{"kind":"textbox","id":"sh/qlkn210j","slide":4,"text":"03","textPreview":"03","textChars":2,"textLines":1,"bbox":[78,312,48,32]}
+{"kind":"textbox","id":"sh/d8bmxwju","slide":4,"text":"Likely relevance","textPreview":"Likely relevance","textChars":16,"textLines":1,"bbox":[142,312,245,32]}
+{"kind":"textbox","id":"sh/cn254ri9","slide":4,"text":"Flag likely relevant, possibly relevant, or probably intentional for human review.","textPreview":"Flag likely relevant, possibly relevant, or probably intentional for human review.","textChars":82,"textLines":1,"bbox":[390,312,800,40]}
+{"kind":"textbox","id":"sh/zat4z6h0","slide":4,"text":"04","textPreview":"04","textChars":2,"textLines":1,"bbox":[78,373,48,32]}
+{"kind":"textbox","id":"sh/e9kn610f","slide":4,"text":"Evidence gaps","textPreview":"Evidence gaps","textChars":13,"textLines":1,"bbox":[142,373,245,32]}
+{"kind":"textbox","id":"sh/1cvm1gz6","slide":4,"text":"Show when a recommendation needs workload data or business context.","textPreview":"Show when a recommendation needs workload data or business context.","textChars":67,"textLines":1,"bbox":[390,373,800,40]}
+{"kind":"textbox","id":"sh/0b258bil","slide":4,"text":"05","textPreview":"05","textChars":2,"textLines":1,"bbox":[78,434,48,32]}
+{"kind":"textbox","id":"sh/fe94nm1w","slide":4,"text":"Snapshot diffs","textPreview":"Snapshot diffs","textChars":14,"textLines":1,"bbox":[142,434,245,32]}
+{"kind":"textbox","id":"sh/ud03uh0b","slide":4,"text":"Prioritize changes that deserve a closer look.","textPreview":"Prioritize changes that deserve a closer look.","textChars":46,"textLines":1,"bbox":[390,434,800,40]}
+{"kind":"textbox","id":"sh/y9o72pkz","slide":4,"text":"06","textPreview":"06","textChars":2,"textLines":1,"bbox":[78,495,48,32]}
+{"kind":"textbox","id":"sh/jax8bu1k","slide":4,"text":"Proposal readiness","textPreview":"Proposal readiness","textChars":18,"textLines":1,"bbox":[142,495,245,32]}
+{"kind":"textbox","id":"sh/kb6p4f2p","slide":4,"text":"Flag proposals that are ready, need context, or remain speculative.","textPreview":"Flag proposals that are ready, need context, or remain speculative.","textChars":67,"textLines":1,"bbox":[390,495,800,40]}
+{"kind":"textbox","id":"sh/lczqdkja","slide":4,"text":"07","textPreview":"07","textChars":2,"textLines":1,"bbox":[78,556,48,32]}
+{"kind":"textbox","id":"sh/a5o7y5kn","slide":4,"text":"Run attention","textPreview":"Run attention","textChars":13,"textLines":1,"bbox":[142,556,245,32]}
+{"kind":"textbox","id":"sh/b6xo7al8","slide":4,"text":"Bring failed, interrupted, or consequential runs forward.","textPreview":"Bring failed, interrupted, or consequential runs forward.","textChars":57,"textLines":1,"bbox":[390,556,800,40]}
+{"kind":"notes","id":"nt/oxd0b2","slide":4,"text":"P0 reflects the user-defined category of a clear project improvement candidate. JEV output should remain advisory. A small evaluation against existing severity/certainty and representative examples should confirm value before relying on rankings. Source: referenced chat “Prioritize JEV Decision Making.”"}
+{"kind":"slide","id":"sl/qdkaqp","slide":5,"title":"JEV roadmap | P1 and P2","textShapes":7}
+{"kind":"shape","id":"sh/ih0fepwv","slide":5,"bbox":[0,0,14,720]}
+{"kind":"textbox","id":"sh/54ry94fm","slide":5,"text":"JEV roadmap | P1 and P2","textPreview":"JEV roadmap | P1 and P2","textChars":23,"textLines":1,"bbox":[68,42,1120,60]}
+{"kind":"textbox","id":"sh/k3ixgze1","slide":5,"text":"P1 needs a new feature or evidence of benefit. P2 is feasible, with a likely small user impact.","textPreview":"P1 needs a new feature or evidence of benefit. P2 is feasible, with a likely small user impact.","textChars":95,"textLines":1,"bbox":[70,108,1100,40]}
+{"kind":"textbox","id":"sh/769gbexs","slide":5,"text":"05","textPreview":"05","textChars":2,"textLines":1,"bbox":[1172,660,50,24]}
+{"kind":"textbox","id":"sh/650fi9w7","slide":5,"text":"P1  |  Needs a feature or validation","textPreview":"P1  |  Needs a feature or validation","textChars":36,"textLines":1,"bbox":[74,184,1080,38]}
+{"kind":"textbox","id":"sh/t8rydofi","slide":5,"text":"Database-engine suitability from richer workload context\nIndex candidates and query profiling priorities\nChat tool routing and evidence-coverage checks\nSnapshot freshness and scan-warning impact\nSource-reference ranking and migration risk\nAmbiguous findings routed to human review\nRelated findings across snapshots; guided next report","textPreview":"Database-engine suitability from richer workload context | Index candidates and query profiling priorities | Chat tool routing and eviden...","textChars":334,"textLines":7,"bbox":[82,232,1080,245]}
+{"kind":"shape","id":"sh/s7ixkjex","slide":5,"bbox":[74,493,1110,1]}
+{"kind":"textbox","id":"sh/fatgfexo","slide":5,"text":"P2  |  Low impact or mostly polish","textPreview":"P2  |  Low impact or mostly polish","textChars":34,"textLines":1,"bbox":[74,520,1080,36]}
+{"kind":"textbox","id":"sh/u9kfm9w3","slide":5,"text":"Object ordering, detail display, documentation order, follow-up questions, explanation length, default tabs or filters, and report labels.","textPreview":"Object ordering, detail display, documentation order, follow-up questions, explanation length, default tabs or filters, and report labels.","textChars":138,"textLines":1,"bbox":[82,567,1080,66]}
+{"kind":"notes","id":"nt/qdkaqp","slide":5,"text":"P1 and P2 items are proposed opportunities from the referenced JEV analysis. Engine suitability currently uses a provisional heuristic, and index experiments use synthetic or sandbox data. Neither should be presented as a validated production recommendation."}
+{"kind":"slide","id":"sl/dkf34m","slide":6,"title":"Implementation sequence and safety boundaries","textShapes":12}
+{"kind":"shape","id":"sh/hwja58nm","slide":6,"bbox":[0,0,14,720]}
+{"kind":"textbox","id":"sh/ut8ratov","slide":6,"text":"Implementation sequence and safety boundaries","textPreview":"Implementation sequence and safety boundaries","textChars":45,"textLines":1,"bbox":[68,42,1120,60]}
+{"kind":"textbox","id":"sh/vuhs3y5g","slide":6,"text":"Start with decisions that reuse existing evidence. Expand only when a workflow or evaluation supports it.","textPreview":"Start with decisions that reuse existing evidence. Expand only when a workflow or evaluation supports it.","textChars":105,"textLines":1,"bbox":[70,108,1100,40]}
+{"kind":"textbox","id":"sh/8rq98365","slide":6,"text":"06","textPreview":"06","textChars":2,"textLines":1,"bbox":[1172,660,50,24]}
+{"kind":"textbox","id":"sh/tszaho7a","slide":6,"text":"01  Evaluate","textPreview":"01  Evaluate","textChars":12,"textLines":1,"bbox":[76,202,320,34]}
+{"kind":"textbox","id":"sh/6p8r6toz","slide":6,"text":"Compare a few representative findings and diffs with current sorting.","textPreview":"Compare a few representative findings and diffs with current sorting.","textChars":69,"textLines":1,"bbox":[76,249,310,95]}
+{"kind":"shape","id":"sh/7qhsfypk","slide":6,"bbox":[406,218,1,122]}
+{"kind":"textbox","id":"sh/kn694j6t","slide":6,"text":"02  Pilot","textPreview":"02  Pilot","textChars":9,"textLines":1,"bbox":[452,202,320,34]}
+{"kind":"textbox","id":"sh/lofqdo7e","slide":6,"text":"Add advisory priority and evidence-gap labels to findings.","textPreview":"Add advisory priority and evidence-gap labels to findings.","textChars":58,"textLines":1,"bbox":[452,249,310,95]}
+{"kind":"shape","id":"sh/h47ylonm","slide":6,"bbox":[782,218,1,122]}
+{"kind":"textbox","id":"sh/wjyhcjm1","slide":6,"text":"03  Expand","textPreview":"03  Expand","textChars":10,"textLines":1,"bbox":[828,202,320,34]}
+{"kind":"textbox","id":"sh/vipgje5w","slide":6,"text":"Add proposal and run triage, then validate each new use case.","textPreview":"Add proposal and run triage, then validate each new use case.","textChars":61,"textLines":1,"bbox":[828,249,310,95]}
+{"kind":"shape","id":"sh/uhgza94b","slide":6,"bbox":[76,395,1110,1]}
+{"kind":"textbox","id":"sh/9g7yh4nq","slide":6,"text":"Keep these deterministic or human-controlled","textPreview":"Keep these deterministic or human-controlled","textChars":44,"textLines":1,"bbox":[76,430,1040,35]}
+{"kind":"textbox","id":"sh/8feh8zm5","slide":6,"text":"Database facts and permissions\nRead-query safety and access checks\nSQL execution, migrations, and target changes\nFinal approval and business-context decisions","textPreview":"Database facts and permissions | Read-query safety and access checks | SQL execution, migrations, and target changes | Final approval and...","textChars":158,"textLines":4,"bbox":[82,484,1080,125]}
+{"kind":"textbox","id":"sh/7e5gfu5k","slide":6,"text":"JEV confidence is a signal, not proof.","textPreview":"JEV confidence is a signal, not proof.","textChars":38,"textLines":1,"bbox":[76,626,800,28]}
+{"kind":"notes","id":"nt/dkf34m","slide":6,"text":"The referenced chat recommends treating JEV as a structured decision model for bounded questions. Keep deterministic checks as the source of facts and require human review for high-impact actions. This deck describes the planned JEV layer, not existing implementation."}

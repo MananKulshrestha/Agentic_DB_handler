@@ -12,6 +12,7 @@ type View = 'overview' | 'explorer' | 'findings' | 'documentation' | 'design' | 
 type RunStart = { run_id: string; events_url: string };
 type AuditEvent = { id: string; action: string; resource_type: string; resource_id: string; actor: string; created_at: string };
 const Diagram = lazy(() => import('./Diagram'));
+const initialConnectionForm = { name: 'Demo PostgreSQL', engine: 'postgresql', host: '127.0.0.1', port: 5433, database: 'demo', auth_source: 'admin', username: 'demo_read', password: 'demo_read', schema_scope: ['public'] };
 
 function Markdown({ children }: { children: string }) {
   return <div className="markdown"><ReactMarkdown remarkPlugins={[remarkGfm]}>{children}</ReactMarkdown></div>;
@@ -24,6 +25,7 @@ export default function App() {
   const [objectId, setObjectId] = useState('');
   const [view, setView] = useState<View>('overview');
   const [showConnectionForm, setShowConnectionForm] = useState(false);
+  const [editingConnectionId, setEditingConnectionId] = useState('');
   const [error, setError] = useState('');
   const [notice, setNotice] = useState('');
   const [activeRun, setActiveRun] = useState('');
@@ -39,7 +41,7 @@ export default function App() {
   const [dependencyRight, setDependencyRight] = useState('');
   const [ruleDescription, setRuleDescription] = useState('');
   const [objectSearch, setObjectSearch] = useState('');
-  const [connectionForm, setConnectionForm] = useState({ name: 'Demo PostgreSQL', engine: 'postgresql', host: '127.0.0.1', port: 5433, database: 'demo', auth_source: 'admin', username: 'demo_read', password: 'demo_read', schema_scope: ['public'] });
+  const [connectionForm, setConnectionForm] = useState(initialConnectionForm);
 
   const connections = useQuery({ queryKey: ['connections'], queryFn: () => api<Connection[]>('/connections') });
   useEffect(() => { if (!connectionId && connections.data?.length) setConnectionId(connections.data[0].id); }, [connections.data, connectionId]);
@@ -134,13 +136,32 @@ export default function App() {
   async function saveConnection() {
     setError('');
     try {
-      const created = await post<Connection>('/connections', connectionForm);
+      const { password, ...details } = connectionForm;
+      const saved = editingConnectionId
+        ? await patch<Connection>(`/connections/${editingConnectionId}`, {
+            ...details,
+            ...(password ? { password } : {}),
+          })
+        : await post<Connection>('/connections', connectionForm);
       await qc.invalidateQueries({ queryKey: ['connections'] });
-      setConnectionId(created.id); setSnapshotId(''); setShowConnectionForm(false); setNotice('Connection saved. Test it, then scan.');
+      setConnectionId(saved.id); setSnapshotId(''); setShowConnectionForm(false); setEditingConnectionId(''); setNotice('Connection saved. Test it, then scan.');
     } catch (exc) { setError(String(exc)); }
   }
 
+  function editConnection() {
+    const selected = connections.data?.find((item) => item.id === connectionId);
+    if (!selected) return;
+    setConnectionForm({
+      name: selected.name, engine: selected.engine, host: selected.host, port: selected.port,
+      database: selected.database, auth_source: selected.auth_source,
+      username: selected.username, password: '', schema_scope: selected.schema_scope,
+    });
+    setEditingConnectionId(selected.id);
+    setShowConnectionForm(true);
+  }
+
   async function testConnection() {
+    setError(''); setNotice('');
     try {
       const result = await post<Record<string, unknown>>(`/connections/${connectionId}/test`, {});
       setNotice(`Connected. ${String(result.engine_version || '')}`);
@@ -173,17 +194,19 @@ export default function App() {
     <aside className="left-sidebar">
       <div className="brand"><Database size={22} /><div><strong>Database Workbench</strong><small>Understand your data</small></div></div>
       <label className="field-label">Connection</label>
-      <select value={connectionId} onChange={(event) => { setConnectionId(event.target.value); setSnapshotId(''); setObjectId(''); setConversationId(''); }}>
+      <select value={connectionId} onChange={(event) => { setConnectionId(event.target.value); setSnapshotId(''); setObjectId(''); setConversationId(''); setError(''); setNotice(''); }}>
         <option value="">Choose a connection</option>{connections.data?.map((item) => <option key={item.id} value={item.id}>{item.name}</option>)}
       </select>
-      <button className="quiet full" onClick={() => setShowConnectionForm(!showConnectionForm)}><Plus size={16} /> Add connection</button>
+      <button className="quiet full" onClick={() => { setConnectionForm(initialConnectionForm); setEditingConnectionId(''); setShowConnectionForm(true); }}><Plus size={16} /> Add connection</button>
+      {connectionId && <button className="quiet full" onClick={editConnection}>Edit connection</button>}
       {showConnectionForm && <div className="connection-form">
-        {(['name', 'host', 'database', 'username', 'password'] as const).map((key) => <label key={key}>{key}<input type={key === 'password' ? 'password' : 'text'} value={connectionForm[key]} onChange={(e) => setConnectionForm({ ...connectionForm, [key]: e.target.value })} /></label>)}
+        {(['name', 'host', 'database', 'username', 'password'] as const).map((key) => <label key={key}>{key}<input type={key === 'password' ? 'password' : 'text'} placeholder={key === 'password' && editingConnectionId ? 'Leave blank to keep current password' : undefined} value={connectionForm[key]} onChange={(e) => setConnectionForm({ ...connectionForm, [key]: e.target.value })} /></label>)}
         <label>Engine<select value={connectionForm.engine} onChange={(e) => setConnectionForm({ ...connectionForm, engine: e.target.value, port: e.target.value === 'mongodb' ? 27017 : e.target.value === 'mariadb' ? 3306 : 5432, schema_scope: e.target.value === 'postgresql' ? ['public'] : [] })}><option value="postgresql">PostgreSQL</option><option value="mariadb">MariaDB</option><option value="mongodb">MongoDB</option></select></label>
         {connectionForm.engine === 'mongodb' && <label>Authentication database<input value={connectionForm.auth_source} onChange={(e) => setConnectionForm({ ...connectionForm, auth_source: e.target.value })} /></label>}
         <label>Port<input type="number" value={connectionForm.port} onChange={(e) => setConnectionForm({ ...connectionForm, port: Number(e.target.value) })} /></label>
         <label>Schema scope<input value={connectionForm.schema_scope.join(', ')} onChange={(e) => setConnectionForm({ ...connectionForm, schema_scope: e.target.value.split(',').map((x) => x.trim()).filter(Boolean) })} /></label>
-        <button onClick={saveConnection}>Save connection</button>
+        <button onClick={saveConnection}>{editingConnectionId ? 'Update connection' : 'Save connection'}</button>
+        <button className="quiet full" onClick={() => { setShowConnectionForm(false); setEditingConnectionId(''); }}>Cancel</button>
       </div>}
       {connectionId && <div className="connection-actions"><button className="quiet" onClick={testConnection}>Test</button><button className="quiet" disabled={!!activeRun} onClick={() => start('scan', { snapshot_id: undefined })}><Play size={14} /> Scan</button></div>}
       <label className="field-label">Snapshot</label>

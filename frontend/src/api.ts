@@ -32,7 +32,9 @@ export async function api<T>(path: string, init?: RequestInit): Promise<T> {
   });
   if (!response.ok) {
     const body = await response.json().catch(() => ({}));
-    throw new Error(typeof body.message === 'string' ? body.message : typeof body.detail === 'string' ? body.detail : `Request failed (${response.status})`);
+    const message = typeof body.message === 'string' ? body.message : typeof body.detail === 'string' ? body.detail : `Request failed (${response.status})`;
+    const hint = typeof body.details?.hint === 'string' ? body.details.hint : '';
+    throw new Error(hint ? `${message} ${hint}` : message);
   }
   if (response.status === 204) return undefined as T;
   return response.json() as Promise<T>;
